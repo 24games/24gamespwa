@@ -13,6 +13,13 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    
+    if (isIOS) {
+      window.location.replace('https://24games.cl')
+      return
+    }
+    
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                          (window.navigator as any).standalone === true
     
