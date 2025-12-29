@@ -10,19 +10,18 @@ interface BeforeInstallPromptEvent extends Event {
 export default function Home() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [countdown, setCountdown] = useState(10)
-  const [isInstalled, setIsInstalled] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                          (window.navigator as any).standalone === true
     
     if (isStandalone) {
-      setIsInstalled(true)
-      window.location.href = '/app'
+      window.location.replace('/app')
       return
     }
     
-    localStorage.removeItem('pwa-installed')
+    setIsLoading(false)
 
     const handler = (e: Event) => {
       e.preventDefault()
@@ -53,7 +52,6 @@ export default function Home() {
       const { outcome } = await deferredPrompt.userChoice
       if (outcome === 'accepted') {
         setDeferredPrompt(null)
-        setIsInstalled(true)
       }
     } else {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -83,7 +81,7 @@ export default function Home() {
     }
   }
 
-  if (isInstalled) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center text-white">
