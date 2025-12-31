@@ -3,6 +3,8 @@ import webpush from 'web-push'
 import { supabaseAdmin } from '@/lib/supabase'
 import { configureWebPush } from '@/lib/vapid'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const { title, body, url, password } = await request.json()
